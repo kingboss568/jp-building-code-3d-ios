@@ -1,0 +1,30 @@
+{
+  "identifier" : "8E0E8878-0EB2-4466-94E5-CE7DB0916000",
+  "nonRenewingSubscriptions" : [ ],
+  "products" : [
+    {
+      "displayPrice" : "1600",
+      "familyShareable" : false,
+      "internalID" : "B23D7864-D997-47EE-9542-631A5E909000",
+      "localizations" : [
+        {
+          "description" : "250枚の3D図解を買い切りで解除します。100ツールは無料のまま利用できます。",
+          "displayName" : "全図解を解除",
+          "locale" : "ja_JP"
+        }
+      ],
+      "productID" : "com.jiangyushiung.jpbuildingcode3d.pro",
+      "referenceName" : "建築基準法令3D図解 全図解解除",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "jp-building-code-3d",
+    "_developerTeamID" : "842FV34L9S"
+  },
+  "subscriptionGroups" : [ ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

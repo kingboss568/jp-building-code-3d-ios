@@ -1,0 +1,15 @@
+.DS_Store
+._*
+Build/
+DerivedData/
+*.xcarchive
+*.ipa
+*.dSYM.zip
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots.html
+fastlane/test_output/
+Signing/.env*
+!Signing/.env.example
+output/logs/
+

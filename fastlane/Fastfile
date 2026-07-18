@@ -1,0 +1,92 @@
+default_platform(:ios)
+
+APP_NAME = "建築基準法令3D図解"
+APP_IDENTIFIER = "com.jiangyushiung.jpbuildingcode3d"
+PRODUCT_ID = "com.jiangyushiung.jpbuildingcode3d.pro"
+
+def jp_api_key
+  required = %w[JP_ASC_KEY_ID JP_ASC_ISSUER_ID JP_ASC_KEY_PATH]
+  missing = required.select { |key| ENV[key].to_s.empty? }
+  UI.user_error!("不足する環境変数: #{missing.join(', ')}") unless missing.empty?
+  app_store_connect_api_key(
+    key_id: ENV["JP_ASC_KEY_ID"],
+    issuer_id: ENV["JP_ASC_ISSUER_ID"],
+    key_filepath: ENV["JP_ASC_KEY_PATH"],
+    duration: 1200,
+    in_house: false
+  )
+end
+
+def jp_guard!
+  UI.user_error!("JP_TEAM_ID must be 842FV34L9S") unless ENV.fetch("JP_TEAM_ID", "842FV34L9S") == "842FV34L9S"
+  UI.user_error!("誤ったBundle ID") unless APP_IDENTIFIER == "com.jiangyushiung.jpbuildingcode3d"
+  sh("../scripts/verify_release_assets.sh")
+end
+
+platform :ios do
+  desc "ローカルrelease guard。アップロードは行わない。"
+  lane :preflight do
+    jp_guard!
+    UI.success("#{APP_NAME} / #{APP_IDENTIFIER} / #{PRODUCT_ID} / JPY¥1600")
+  end
+
+  desc "App Store metadataのみをアップロード。binaryとscreenshotsは変更しない。"
+  lane :upload_metadata do
+    jp_guard!
+    deliver(
+      api_key: jp_api_key,
+      app_identifier: APP_IDENTIFIER,
+      username: ENV["JP_APPLE_ID"],
+      metadata_path: "metadata",
+      force: true,
+      skip_screenshots: true,
+      skip_binary_upload: true,
+      skip_app_version_update: true,
+      submit_for_review: false,
+      precheck_include_in_app_purchases: false,
+      run_precheck_before_submit: false,
+      automatic_release: false
+    )
+  end
+
+  desc "iPhone 6.9とiPad 13の各6枚を上書きアップロード。"
+  lane :upload_screenshots do
+    jp_guard!
+    deliver(
+      api_key: jp_api_key,
+      app_identifier: APP_IDENTIFIER,
+      username: ENV["JP_APPLE_ID"],
+      screenshots_path: "screenshots",
+      force: true,
+      overwrite_screenshots: true,
+      skip_metadata: true,
+      skip_binary_upload: true,
+      skip_app_version_update: true,
+      submit_for_review: false,
+      precheck_include_in_app_purchases: false,
+      run_precheck_before_submit: false
+    )
+  end
+
+  desc "Xcode Cloudから取得したIPAだけをアップロード。"
+  lane :upload_cloud_ipa do
+    jp_guard!
+    ipa_path = ENV["JP_CLOUD_IPA_PATH"].to_s
+    UI.user_error!("JP_CLOUD_IPA_PATHを指定してください") if ipa_path.empty?
+    UI.user_error!("IPAが存在しません: #{ipa_path}") unless File.exist?(ipa_path)
+    upload_to_app_store(
+      api_key: jp_api_key,
+      app_identifier: APP_IDENTIFIER,
+      username: ENV["JP_APPLE_ID"],
+      ipa: ipa_path,
+      skip_metadata: true,
+      skip_screenshots: true,
+      skip_app_version_update: true,
+      submit_for_review: false,
+      precheck_include_in_app_purchases: false,
+      run_precheck_before_submit: false,
+      force: true
+    )
+  end
+end
+
