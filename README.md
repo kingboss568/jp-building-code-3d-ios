@@ -10,7 +10,12 @@
 - IAP: `com.jiangyushiung.jpbuildingcode3d.pro`
 - Price copy: `JPY¥1600`
 - Primary locale: `ja`
-- Version / build: `1.0 / 1`
+- Version / build: `1.0 / 6`
+- App Store Connect app ID: `6792328983`
+- Review status: `WAITING_FOR_REVIEW`
+- Review submission: `45bedc93-68a0-4d1e-a291-20c5bc099aa9`
+
+最終送審狀態與證據請見 [RELEASE_STATUS.md](RELEASE_STATUS.md)。
 
 ## Main features
 
@@ -28,4 +33,3 @@ DEVELOPER_DIR=/Users/jushiung/Downloads/Xcode-beta.app/Contents/Developer \
   xcodebuild -project BuildingCode3D.xcodeproj -scheme BuildingCode3D \
   -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO build
 ```
-

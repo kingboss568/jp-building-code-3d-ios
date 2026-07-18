@@ -8,3 +8,12 @@
 6. `VALID` build を version 1.0 に選択し、App Privacy、Support、IAP を同じ submission に関連付ける。
 7. review submission を送信し、App version と IAP が `WAITING_FOR_REVIEW` 以上になったことを live ASC で確認。
 
+## 2026-07-19 完了記録
+
+- App Store version：`1.0 (6)`／`WAITING_FOR_REVIEW`
+- IAP：`6792344078`／`com.jiangyushiung.jpbuildingcode3d.pro`／`WAITING_FOR_REVIEW`
+- Review submission：`45bedc93-68a0-4d1e-a291-20c5bc099aa9`
+- 提交時間：`2026-07-19 06:59`（Asia/Taipei）
+- 提交項目：App version と IAP の 2 項目
+- 發佈方式：手動發佈
+- 次の操作：App Review を待機。Apple から要求がない限り、submission をキャンセルしない。
