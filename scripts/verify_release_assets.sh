@@ -13,9 +13,20 @@ plutil -lint "$RESOURCE_ROOT/PrivacyInfo.xcprivacy" >/dev/null
 diagram_count=$(find "$RESOURCE_ROOT/Generated/diagrams" -type f -name '*.heic' | wc -l | tr -d ' ')
 [[ "$diagram_count" == "250" ]] || { print -u2 "HEIC図解は250枚必要です: $diagram_count"; exit 1; }
 
-jq -e 'length == 250 and .[0].id == "A1-01-01" and .[249].id == "A1-25-10"' "$RESOURCE_ROOT/Data/diagrams_ja.json" >/dev/null
+records_file="$RESOURCE_ROOT/Data/diagrams_ja.json"
+record_count=$(plutil -p "$records_file" | grep -c '"id" =>')
+first_record_id=$(plutil -extract 0.id raw -o - "$records_file")
+last_record_id=$(plutil -extract 249.id raw -o - "$records_file")
+[[ "$record_count" == "250" && "$first_record_id" == "A1-01-01" && "$last_record_id" == "A1-25-10" ]] || {
+  print -u2 "図解データの件数またはIDが不正です: $record_count / $first_record_id / $last_record_id"
+  exit 1
+}
 
-price_hits=$(rg -l 'JPY¥1600' "$PROJECT_ROOT/BuildingCode3D" "$PROJECT_ROOT/fastlane/metadata" "$PROJECT_ROOT/Docs" | wc -l | tr -d ' ')
+price_hits=$(
+  find "$PROJECT_ROOT/BuildingCode3D" "$PROJECT_ROOT/fastlane/metadata" "$PROJECT_ROOT/Docs" \
+    -type f \( -name '*.swift' -o -name '*.md' -o -name '*.txt' -o -name '*.json' \) \
+    -exec grep -l 'JPY¥1600' {} + | wc -l | tr -d ' '
+)
 [[ "$price_hits" -ge 4 ]] || { print -u2 "JPY¥1600 の統一表記が不足しています"; exit 1; }
 
 [[ $(find "$PROJECT_ROOT" -name '._*' -o -name '.DS_Store' | wc -l | tr -d ' ') == "0" ]] || { print -u2 "AppleDoubleまたは.DS_Storeがあります"; exit 1; }
