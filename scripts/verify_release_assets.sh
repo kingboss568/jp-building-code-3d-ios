@@ -31,7 +31,7 @@ price_hits=$(
 
 [[ $(find "$PROJECT_ROOT" -name '._*' -o -name '.DS_Store' | wc -l | tr -d ' ') == "0" ]] || { print -u2 "AppleDoubleまたは.DS_Storeがあります"; exit 1; }
 
-screenshot_root="$PROJECT_ROOT/fastlane/screenshots/ja-JP"
+screenshot_root="$PROJECT_ROOT/fastlane/screenshots/ja"
 iphone_count=$(find "$screenshot_root" -type f -name 'iPhone 6.9-*.png' 2>/dev/null | wc -l | tr -d ' ')
 ipad_count=$(find "$screenshot_root" -type f -name 'iPad 13-*.png' 2>/dev/null | wc -l | tr -d ' ')
 [[ "$iphone_count" == "6" && "$ipad_count" == "6" ]] || { print -u2 "スクリーンショットはiPhone/iPad各6枚必要です: $iphone_count / $ipad_count"; exit 1; }
